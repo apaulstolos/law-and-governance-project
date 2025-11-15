@@ -1,0 +1,2 @@
+# Ignore large derived artifacts
+data/comment_embeddings.npy

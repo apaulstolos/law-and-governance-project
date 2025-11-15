@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile.notebook
+    env_file: .env
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/workspace
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    depends_on:
+      - notebook
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    ports:
+      - "4173:4173"
+    depends_on:
+      - api
