@@ -1,12 +1,22 @@
 from __future__ import annotations
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.schemas import AnalyzeRequest, AnalyzeResponse, CommentAnalysis
 from app.services.azure_client import generate_response, generate_summary
 from app.services.classifier import classifier
 
 app = FastAPI(title="Comment Intelligence API", version="0.1.0")
+
+# Add CORS middleware to allow requests from the frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4173", "http://localhost:5173", "http://127.0.0.1:4173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def summarize_prompt(comment: str, response: str | None) -> str:

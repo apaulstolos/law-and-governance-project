@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+});
+
 type Analysis = {
   comment_id?: string;
   summary: string;
@@ -21,7 +25,7 @@ function App() {
     setError(null);
     setResult(null);
     try {
-      const response = await axios.post('/api/analyze', {
+      const response = await api.post('/analyze', {
         items: [
           {
             comment,

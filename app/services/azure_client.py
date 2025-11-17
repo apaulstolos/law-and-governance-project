@@ -25,9 +25,9 @@ def embed_texts(texts: List[str]) -> List[List[float]]:
 
 
 def generate_summary(prompt: str, max_tokens: int = 200) -> str:
-    completion = _client.responses.create(
+    completion = _client.chat.completions.create(
         model=settings.azure_openai_chat_deployment,
-        input=[
+        messages=[
             {
                 "role": "system",
                 "content": "You summarize public comments related to environmental impact statements.",
@@ -35,15 +35,15 @@ def generate_summary(prompt: str, max_tokens: int = 200) -> str:
             {"role": "user", "content": prompt},
         ],
         temperature=0.2,
-        max_output_tokens=max_tokens,
+        max_tokens=max_tokens,
     )
-    return completion.output[0].content[0].text.strip()
+    return completion.choices[0].message.content.strip()
 
 
 def generate_response(prompt: str, max_tokens: int = 350) -> str:
-    completion = _client.responses.create(
+    completion = _client.chat.completions.create(
         model=settings.azure_openai_chat_deployment,
-        input=[
+        messages=[
             {
                 "role": "system",
                 "content": "You draft concise, respectful agency responses to public comments.",
@@ -51,6 +51,6 @@ def generate_response(prompt: str, max_tokens: int = 350) -> str:
             {"role": "user", "content": prompt},
         ],
         temperature=0.4,
-        max_output_tokens=max_tokens,
+        max_tokens=max_tokens,
     )
-    return completion.output[0].content[0].text.strip()
+    return completion.choices[0].message.content.strip()
